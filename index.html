@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Funyard</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <script src="assets/js/vendor/aframe-master.js"></script>
+        <!-- <script src="https://unpkg.com/aframe-orbit-controls@0.1.14/dist/aframe-orbit-controls.min.js"></script> -->
+        <script src="assets/js/vendor/aframe-extras.loaders.min.js"></script>
+        <script src="assets/js/vendor/inflate.min.js"></script>
+        <script src="assets/js/vendor/aframe-orbit-controls-component.min.js"></script>
+        <script src="assets/js/vendor/aframe-animation-component.min.js"></script>
+        <script src="assets/js/vendor/GPUParticleSystem.js"></script>
+        <script src="assets/js/Lensflare.js"></script>
+        <script src="assets/js/Fire.js"></script>
+        <script src="assets/js/aframe-funyard.js"></script>
+        <script src="assets/js/app.js"></script>
+    </head>
+    <body>
+        <a-scene effects="fxaa" fxaa antialias="true">
+            <a-assets>
+                <img id="model-base" src="assets/models/model/ModelBaseLow.jpg" />
+                <img id="mountain-base" src="assets/models/mountain/MountainBaseLow.jpg" />
+                <img id="panorama" src="assets/textures/panorama/PanoramaLow.jpg" />
+                <audio id="soundscape" src="assets/sound/funyard-1.2-web-soundscape.mp3"></audio>
+                <audio id="flute" src="assets/sound/funyard-1.2-web-flute.mp3"></audio>
+                <audio id="arp" src="assets/sound/funyard-1.2-web-soft_arp.mp3"></audio>
+            </a-assets>
+
+            <!-- MODELS -->
+
+            <a-entity
+                id="model"
+                position="0 0.263 0"
+                rotation="0 0 0"
+                scale="0.03 0.03 0.03"
+                fbx-model="src: url(assets/models/model/Model.fbx);"
+                animation-mixer="clip: *;"
+                fbx-material="src: #model-base"
+            ></a-entity>
+
+            <a-entity
+                id="mountain"
+                position="0 0 0"
+                scale="0.03 0.03 0.03"
+                fbx-model="src: url(assets/models/mountain/Mountain.fbx)"
+                fbx-material="src: #mountain-base"
+            ></a-entity>
+
+            <!-- DAY & NIGHT -->
+
+            <a-entity id="day">
+                <a-light type="ambient" color="#fff"></a-light>
+                <a-light type="hemisphere" color="#bbbbff" groundColor="#444422" intensity="0.5"></a-light>
+                <a-sky rotation="0 -85 0" radius="1000" src="#panorama" xshader="standard"></a-sky>
+                <a-entity id="lensflare" lensflare></a-entity>
+                <a-entity id="particles" particles only-desktop></a-entity>
+            </a-entity>
+
+            <!-- <a-entity id="night">
+                <a-entity light="type: hemisphere; color: #0E192B; groundColor: #1D0A57; intensity: 2"></a-entity>
+                <a-entity
+                    position="100.0 100.0 -100.0"
+                    geometry="primitive: sphere; radius: 10.0;"
+                    material="shader: flat; color: #fff;"
+                    id="moon"
+                ></a-entity>
+                <a-sky radius="5000" sky-material></a-sky>
+                <a-entity id="fire" position="0.0 0.0 -3.0">
+                    <a-entity
+                        fire="particles: 500;"
+                        position="0.0 -0.2 0.0"
+                        scale="10 10 10"
+                        sound="src: url(./assets/sound/fire.mp3); autoplay: true; loop: true; refDistance: 1.0; rolloffFactor: 5.0; volume: 1.0; distanceModel: exponential;"
+                    ></a-entity>
+                    <a-entity
+                        position="0.0 1.5 0.0"
+                        light="type: point; color: #FFA200; intensity: 1.5; distance: 10.0; castShadow: true; shadowMapHeight: 1024; shadowMapWidth: 1024;"
+                        animation="property: light.intensity; to: 1.6; dur: 293; fill: forwards; loop: true; dir: alternate; easing: easeInOutQuad;"
+                        animation__position="property: position; dur: 223; fill: forwards; to: 0 0 0.05; loop: true; dir: alternate; easeing: easeInOutQuad;"
+                    ></a-entity>
+                </a-entity>
+            </a-entity> -->
+
+            <!-- SOUNDS -->
+
+            <a-entity
+                id="soundscape"
+                position="0 0 0"
+                sound="src: #soundscape; autoplay: true; loop: true; volume: 15"
+            ></a-entity>
+            <a-entity
+                id="flute"
+                position="0 0 -100"
+                sound="src: #flute; autoplay: true; distanceModel: exponential; loop: true; volume: 10"
+            ></a-entity>
+
+            <a-entity
+                id="arp"
+                position="0 0 100"
+                sound="src: #arp; autoplay: true; distanceModel: exponential; loop: true; volume: 25"
+            ></a-entity>
+
+            <!-- CAMERA -->
+
+            <a-entity
+                position="0 100 0"
+                rotation="-90 260 0"
+                animation="property: position; to: 0 16 0; dur: 10000; easing: easeInOutQuad;"
+                animation__rotation="property: rotation; to: 0 0 0; dur: 7000; delay: 3000; easing: easeInOutQuint;"
+            >
+                <a-entity
+                    id="camera"
+                    camera="
+					fov: 40;
+					zoom: 1;
+					far: 10000;
+					near: 1;"
+                    orbit-controls="
+					autoRotate: true;
+					target: #model;
+					enableDamping: true;
+					dampingFactor: 0.1;
+					rotateSpeed: 0.08;
+					autoRotateSpeed: 0.05;
+					minDistance: 20;
+					maxDistance: 120;
+					minPolarAngle: 1.25;
+					maxPolarAngle: 1.75;
+					invertZoom: true;"
+                    look-controls
+                    position="0 8 92"
+                ></a-entity>
+            </a-entity>
+
+            <!-- CAMERA VR -->
+
+            <a-entity position="-4 15.28 -22" rotation="0.26 -160 -0.18">
+                <a-entity
+                    id="camera-vr"
+                    camera="fov: 80; zoom: 1; far: 10000; near: 1;"
+                    look-controls
+                    wasd-controls="acceleration: 10000;"
+                ></a-entity>
+            </a-entity>
+        </a-scene>
+    </body>
+</html>

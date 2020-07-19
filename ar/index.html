@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <script src="../assets/js/vendor/aframe-master.js"></script>
+        <script src="../assets/js/vendor/aframe-ar.min.js"></script>
+        <script src="../assets/js/vendor/aframe-extras.loaders.min.js"></script>
+        <script src="../assets/js/vendor/inflate.min.js"></script>
+        <script src="../assets/js/aframe-funyard.js"></script>
+    </head>
+    <body style="margin: 0;">
+        <a-scene
+            embedded
+            arjs="
+		debugUIEnabled: false; 
+		detectionMode: mono; 
+		maxDetectionRate: 30;
+		sourceType: webcam;
+		xsourceType: image;
+		xsourceUrl: ../assets/images/ar-marker.png;
+		xcanvasWidth: 240;
+		xcanvasHeight: 180;
+		cameraParametersUrl: ../assets/data/camera_para.dat"
+        >
+            <a-assets>
+                <img id="model-base" src="../assets/models/model/ModelBaseLow.jpg" />
+            </a-assets>
+            <a-marker-camera
+                camera="
+				fov: 40;
+				zoom: 1;
+				far: 10000;
+				near: 1;"
+                type="pattern"
+                url="../assets/data/pattern-marker.patt"
+            >
+                <!-- MODELS -->
+                <a-entity
+                    id="model"
+                    position="0 0.02 0"
+                    rotation="0 203 0"
+                    scale="0.0045 0.0045 0.0045"
+                    fbx-model="src: url(../assets/models/model/Model.fbx)"
+                    fbx-material="src: #model-base"
+                    ar-stabilise
+                ></a-entity>
+
+                <!-- LIGHTS -->
+                <a-light type="ambient" color="#fff"></a-light>
+                <a-entity
+                    id="sunlight"
+                    position="0 1 0"
+                    light="
+					type: hemisphere;
+					color: #bbbbff;
+					groundColor: #444422;
+					intensity: 0.5"
+                ></a-entity>
+            </a-marker-camera>
+        </a-scene>
+    </body>
+</html>
